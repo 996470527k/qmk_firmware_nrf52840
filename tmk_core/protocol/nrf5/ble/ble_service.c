@@ -473,7 +473,7 @@ void battery_level_update(nrf_saadc_value_t value, uint16_t size) {
     ret_code_t err_code;
     uint8_t    battery_level;
 
-    uint32_t voltage = (value * 6 * 600 * 143 / 256 / 100 / size);
+    uint32_t voltage = (value * 6 * 600 * 143 / 256 / 100 / size)* 1.13;
     NRF_LOG_INFO("Battery voltage: %d mV", voltage);
 
     if (voltage > 4200) {
