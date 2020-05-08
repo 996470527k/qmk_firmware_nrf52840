@@ -536,7 +536,7 @@ static void gap_params_init(void) {
 
     BLE_GAP_CONN_SEC_MODE_SET_OPEN(&sec_mode);
 
-    err_code = sd_ble_gap_device_name_set(&sec_mode, (const uint8_t *)DEVICE_NAME, strlen(DEVICE_NAME));
+    err_code = sd_ble_gap_device_name_set(&sec_mode, (const uint8_t *)PRODUCT, strlen(PRODUCT));
     APP_ERROR_CHECK(err_code);
 
     // err_code = sd_ble_gap_appearance_set(BLE_APPEARANCE_HID_KEYBOARD);
@@ -612,13 +612,13 @@ static void dis_init(void) {
     ble_dis_pnp_id_t pnp_id;
 
     pnp_id.vendor_id_source = PNP_ID_VENDOR_ID_SOURCE;
-    pnp_id.vendor_id        = PNP_ID_VENDOR_ID;
-    pnp_id.product_id       = PNP_ID_PRODUCT_ID;
-    pnp_id.product_version  = PNP_ID_PRODUCT_VERSION;
+    pnp_id.vendor_id        = VENDOR_ID;
+    pnp_id.product_id       = PRODUCT_ID;
+    pnp_id.product_version  = DEVICE_VER;
 
     memset(&dis_init_obj, 0, sizeof(dis_init_obj));
 
-    ble_srv_ascii_to_utf8(&dis_init_obj.manufact_name_str, MANUFACTURER_NAME);
+    ble_srv_ascii_to_utf8(&dis_init_obj.manufact_name_str, MANUFACTURER);
     dis_init_obj.p_pnp_id = &pnp_id;
 
     dis_init_obj.dis_char_rd_sec = SEC_JUST_WORKS;
