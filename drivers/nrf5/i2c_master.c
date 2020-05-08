@@ -43,6 +43,10 @@ void i2c_start(void) {
     i2c_write_register(DRIVER_ADDR_1, 0xFE, 0xC5);
     i2c_write_register(DRIVER_ADDR_1, 0xFD, 0x03);
     i2c_write_register(DRIVER_ADDR_1, 0x00, 0x01);
+    
+    i2c_write_register(DRIVER_ADDR_2, 0xFE, 0xC5);
+    i2c_write_register(DRIVER_ADDR_2, 0xFD, 0x03);
+    i2c_write_register(DRIVER_ADDR_2, 0x00, 0x01);
 #endif
 }
 
@@ -51,6 +55,10 @@ void i2c_stop(void) {
     i2c_write_register(DRIVER_ADDR_1, 0xFE, 0xC5);
     i2c_write_register(DRIVER_ADDR_1, 0xFD, 0x03);
     i2c_write_register(DRIVER_ADDR_1, 0x00, 0x00);
+    
+    i2c_write_register(DRIVER_ADDR_2, 0xFE, 0xC5);
+    i2c_write_register(DRIVER_ADDR_2, 0xFD, 0x03);
+    i2c_write_register(DRIVER_ADDR_2, 0x00, 0x00);
 #endif
     twim_enable = false;
     nrfx_twim_disable(&m_twim_master);
