@@ -9,18 +9,17 @@
 #define DEVICE_VER      0x0001
 #define MANUFACTURER    "Tsiank"
 #define PRODUCT         "Ciank67_ble"
-#define DESCRIPTION     "Dvorak right-handed keyboard"
+#define DESCRIPTION     "The Answer to the Ultimate Question of Life, the Universe, and at least Keyboards"
 
 /* key matrix */
-#define MATRIX_ROWS 5
+#define MATRIX_ROWS 6
 #define MATRIX_COLS 14
 
 // NRF52840 pin map: ((port << 5) | (pin & 0x1F))(P1点几的引脚是32加小数部分，P0点几的引脚直接是小数部分，比如P0.08是8，P0.20是20，P1.06是38（32+6））
 #define MATRIX_ROW_PINS \
-{ 26, 29, 2, 45, 43}
+{ 26, 29, 2, 45, 43, 9 }
 #define MATRIX_COL_PINS \
 { 41, 28, 12, 42, 7, 3, 38, 36, 34, 32, 24, 22, 13, 20 }
-
 #define DEBOUNCE 20
 #define BLUETOOTH_ENABLE
 
@@ -81,13 +80,13 @@
  */
 
 /* Prevent use of disabled MIDI features in the keymap */
-//#define MIDI_ENABLE_STRICT 1
+#define MIDI_ENABLE_STRICT 1
 
 /* enable basic MIDI features:
    - MIDI notes can be sent when in Music mode is on
 */
 
-//#define MIDI_BASIC
+#define MIDI_BASIC
 
 /* enable advanced MIDI features:
    - MIDI notes can be added to the keymap
@@ -95,9 +94,9 @@
    - Virtual sustain, portamento, and modulation wheel
    - etc.
 */
-//#define MIDI_ADVANCED
+#define MIDI_ADVANCED
 
 /* override number of MIDI tone keycodes (each octave adds 12 keycodes and allocates 12 bytes) */
-//#define MIDI_TONE_KEYCODE_OCTAVES 6
+#define MIDI_TONE_KEYCODE_OCTAVES 6
 
 #endif
