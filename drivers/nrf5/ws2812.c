@@ -119,3 +119,26 @@ void ws2812_setleds_rgbw(LED_TYPE *ledarray, uint16_t number_of_leds) {
   *p_dat++ = 0x8000;
   nrfx_pwm_simple_playback(&pwm0, &pwm_seq, 1, NRFX_PWM_FLAG_STOP);
 }
+
+#ifdef RGB_MATRIX_ENABLE
+// Set an led in the buffer to a color	
+void inline ws2812_setled(int i, uint8_t r, uint8_t g, uint8_t b)
+{	
+    led[i].r = r;	
+    led[i].g = g;	
+    led[i].b = b;	
+}
+
+
+void ws2812_setled_all  (uint8_t r, uint8_t g, uint8_t b)
+{
+  for (int i = 0; i < sizeof(led)/sizeof(led[0]); i++) {
+    led[i].r = r;
+    led[i].g = g;
+    led[i].b = b;	
+void WS2812_set_color_all( uint8_t red, uint8_t green, uint8_t blue ) {
+  for (int i = 0; i < RGBLED_NUM; i++) {
+    WS2812_set_color( i, red, green, blue );
+  }
+}
+#endif
