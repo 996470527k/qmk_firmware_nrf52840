@@ -54,11 +54,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,    _______, _______, KC_TRNS,              RSFT_T(KC_SPC),       KC_TRNS,  _______, _______, _______,    _______, _______, _______
                       ),
     [_FN]   = LAYOUT(
-       SLEEP,  SLEEP, MAGIC_TOGGLE_NKRO, _______,  _______,    _______,  _______, _______, KC_PSCREEN, KC_SCROLLLOCK, KC_PAUSE, _______,_______, RESET,
-        OUT_USB, OUT_BT, DISC, DELB,   _______   , _______,   _______, _______, KC_INSERT, KC_HOME, KC_PGUP, _______,_______, REBOOT,
-        _______,    _______,    _______,    _______,  _______, _______, _______, _______, _______, _______, KC_DELETE, KC_END,KC_PGDOWN,
-        ADVS, ADVW, SEL0, SEL1, SEL2, _______,    _______, _______,  _______,_______, _______, _______,_______, _______,
-        RGB_TOG, RGB_MOD, TO(_RGBST), TO(_MOUSE),              KC_SPC, KC_TRNS,_______, RGB_L_T, _______, _______, _______, _______
+       _______,  SLEEP,  MAGIC_TOGGLE_NKRO, _______,    _______, _______,  _______, _______, KC_PSCREEN, KC_SCROLLLOCK, KC_PAUSE, _______,_______, RESET,
+        _______,  OUT_USB, OUT_BT,  _______,   _______, _______,   _______, _______, KC_INSERT, KC_HOME, KC_PGUP, _______,_______, REBOOT,
+        _______,  DELB,   DISC,  _______,  _______, _______, _______, _______, _______, _______, KC_DELETE, KC_END,KC_PGDOWN,
+         _______,  ADVS, ADVW, SEL0, SEL1, SEL2,  _______, _______,  _______,_______, _______, _______,_______, _______,
+        RGB_TOG, RGB_L_T, RGB_MOD,  _______, KC_SPC, KC_TRNS,_______, _______, _______, _______, TO(_RGBST), TO(_MOUSE)
                       ),
     [_QWERTY] = LAYOUT(
         KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,
@@ -72,14 +72,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, RGB_VAI, RGB_VAD, RGB_SPI, RGB_SPD, _______, KC_BTN2, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN1, _______,_______, _______,
         _______, RGB_MODE_PLAIN, RGB_MODE_BREATHE, RGB_MODE_RAINBOW, _______, _______, _______, KC_ACL0, KC_ACL1, KC_ACL2, _______, _______,_______,
         _______, RGB_MODE_SWIRL, RGB_MODE_SNAKE, RGB_MODE_KNIGHT, RGB_MODE_XMAS, RGB_MODE_GRADIENT, RGB_MODE_RGBTEST, _______, _______, _______, _______, _______,_______, _______,
-        _______, _______, TO(_DVORAKR), _______, _______, _______, _______, _______, _______, _______, _______, _______
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,TO(_DVORAKR),  _______
                      ),
     [_MOUSE] = LAYOUT(
         _______, KC_MS_UP, KC_MS_DOWN, KC_MS_LEFT, KC_MS_RIGHT,_______, _______,_______,  _______, _______,_______, _______,_______, _______,
         _______, KC_MS_BTN1, KC_MS_BTN2, _______, _______,  _______, _______, _______, _______, _______,_______, _______, _______,_______, 
         _______, KC_MS_WH_UP, KC_MS_WH_DOWN, _______, _______, _______, _______,_______,_______, _______,_______, _______,_______,
         KC_PWR, KC_MUTE, KC_VOLU, KC_VOLD, KC_MNXT, KC_MPRV, KC_MSTP, KC_MPLY, _______, _______, _______, _______,_______, _______,
-        KC_MY_COMPUTER,  _______,  _______, TO(_DVORAKR),_______, _______, _______, _______, _______, _______, _______, _______
+        KC_MY_COMPUTER,  _______,  _______, _______, _______, _______, _______, _______, _______, _______, _______, TO(_DVORAKR)
                      )
 };
 
