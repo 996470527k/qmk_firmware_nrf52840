@@ -33,6 +33,8 @@ enum ciank67_layers {
     _MOUSE
 };
 
+#define RGB_L_T RGB_LAYER_TOGGLE
+
 enum planck_keycodes { DISC = SAFE_RANGE, ADVW, ADVS, SEL0, SEL1, SEL2, DELB, SLEEP, REBOOT };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -52,11 +54,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,    _______, _______, KC_TRNS,              RSFT_T(KC_SPC),       KC_TRNS,  _______, _______, _______,    _______, _______, _______
                       ),
     [_FN]   = LAYOUT(
-        _______,   _______, _______,  _______,    _______,    _______,  _______, _______, KC_PSCREEN, KC_SCROLLLOCK, KC_PAUSE, _______,_______, RESET,
-        _______,    _______,    _______,    _______,    _______   , _______,   _______, _______, KC_INSERT, KC_HOME, KC_PGUP, _______,_______, REBOOT,
-        DISC, DELB, SLEEP, MAGIC_TOGGLE_NKRO, _______, _______, _______, _______, _______, _______, KC_DELETE, KC_END,KC_PGDOWN,
-        OUT_USB, OUT_BT, ADVS, ADVW, SEL0, SEL1, SEL2, _______, _______, _______,  _______,_______, _______, _______,
-        RGB_TOG, RGB_MOD, TO(_RGBST), TO(_MOUSE),              KC_SPC, KC_TRNS,_______, _______, _______, _______, _______, _______
+       SLEEP,  SLEEP, MAGIC_TOGGLE_NKRO, _______,  _______,    _______,  _______, _______, KC_PSCREEN, KC_SCROLLLOCK, KC_PAUSE, _______,_______, RESET,
+        OUT_USB, OUT_BT, DISC, DELB,   _______   , _______,   _______, _______, KC_INSERT, KC_HOME, KC_PGUP, _______,_______, REBOOT,
+        _______,    _______,    _______,    _______,  _______, _______, _______, _______, _______, _______, KC_DELETE, KC_END,KC_PGDOWN,
+        ADVS, ADVW, SEL0, SEL1, SEL2, _______,    _______, _______,  _______,_______, _______, _______,_______, _______,
+        RGB_TOG, RGB_MOD, TO(_RGBST), TO(_MOUSE),              KC_SPC, KC_TRNS,_______, RGB_L_T, _______, _______, _______, _______
                       ),
     [_QWERTY] = LAYOUT(
         KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,
@@ -84,7 +86,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 void keyboard_post_init_user() {
     #ifdef IS31FL3737
     // Shutdown IS31FL3737 if rgb disabled
-    if (!rgb_matrix_config.enable) {
+    if (!g_rgb_matrix_enable) {
         i2c_stop();
     }
     #endif
@@ -146,7 +148,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         case RGB_TOG:
             if (record->event.pressed) {
-                if (rgb_matrix_config.enable) {
+                if (g_rgb_matrix_enable) {
                     i2c_stop();
                 } else {
                     i2c_start();
@@ -165,7 +167,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 void rgb_matrix_indicators_user(void) {
 	  uint8_t this_led = host_keyboard_leds();
-	  if (!g_suspend_state) {
+	if (!g_suspend_state && g_rgb_matrix_enable) {
 	    switch (biton32(layer_state)) {
         case _QWERTY:
           rgb_matrix_set_color(0, 0x00, 0x00, 0x00);

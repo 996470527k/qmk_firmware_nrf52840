@@ -33,7 +33,7 @@ typedef struct PACKED {
 } last_hit_t;
 #endif  // RGB_MATRIX_KEYREACTIVE_ENABLED
 
-typedef enum rgb_task_states { STARTING, RENDERING, FLUSHING, SYNCING } rgb_task_states;
+typedef enum rgb_task_states { STARTING, RENDERING, FLUSHING, SYNCING } rgb_task_states_t;
 
 typedef uint8_t led_flags_t;
 
@@ -75,10 +75,11 @@ typedef struct PACKED {
 typedef union {
     uint32_t raw;
     struct PACKED {
-        uint8_t enable : 2;
-        uint8_t mode : 6;
-        HSV     hsv;
-        uint8_t speed;  // EECONFIG needs to be increased to support this
+        uint8_t mode;
+    uint8_t  hue;
+    uint8_t  sat;
+    uint8_t  val;
+      uint8_t speed;  // EECONFIG needs to be increased to support this
     };
 } rgb_config_t;
 

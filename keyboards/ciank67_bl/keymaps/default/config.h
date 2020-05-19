@@ -2,6 +2,8 @@
 #define CONFIG_H
 
 #include "config_common.h"
+#pragma once
+#define RGB_MATRIX_MULTIPLE_EFFECTS { LED_FLAG_KEYLIGHT, LED_FLAG_MODIFIER, LED_FLAG_UNDERGLOW }
 
 /* USB Device descriptor parameter */
 #define VENDOR_ID       0xFEED

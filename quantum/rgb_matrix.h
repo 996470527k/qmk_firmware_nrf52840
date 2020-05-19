@@ -57,6 +57,13 @@
 
 #define RGB_MATRIX_TEST_LED_FLAGS() \
     if (!HAS_ANY_FLAGS(g_led_config.flags[i], params->flags)) continue
+    
+typedef struct
+{
+	HSV color;
+	uint8_t index;
+} rgb_indicator;
+
 
 enum rgb_matrix_effects {
     RGB_MATRIX_NONE = 0,
@@ -127,6 +134,10 @@ uint8_t     rgb_matrix_get_mode(void);
 void        rgb_matrix_sethsv(uint16_t hue, uint8_t sat, uint8_t val);
 void        rgb_matrix_sethsv_noeeprom(uint16_t hue, uint8_t sat, uint8_t val);
 
+#ifdef RGB_MATRIX_MULTIPLE_EFFECTS
+void rgb_matrix_step_layer(void);
+#endif
+
 #ifndef RGBLIGHT_ENABLE
 #    define rgblight_toggle() rgb_matrix_toggle()
 #    define rgblight_enable() rgb_matrix_enable()
@@ -165,14 +176,15 @@ extern const rgb_matrix_driver_t rgb_matrix_driver;
 
 extern rgb_config_t rgb_matrix_config;
 
-extern bool           g_suspend_state;
+extern bool g_suspend_state;
+extern bool g_rgb_matrix_enable;
 extern rgb_counters_t g_rgb_counters;
 extern led_config_t   g_led_config;
 #ifdef RGB_MATRIX_KEYREACTIVE_ENABLED
 extern last_hit_t g_last_hit_tracker;
 #endif
 #ifdef RGB_MATRIX_FRAMEBUFFER_EFFECTS
-extern uint8_t rgb_frame_buffer[MATRIX_ROWS][MATRIX_COLS];
+extern uint8_t g_rgb_frame_buffer[MATRIX_ROWS][MATRIX_COLS];
 #endif
 
 #endif
