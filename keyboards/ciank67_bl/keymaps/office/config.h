@@ -3,9 +3,15 @@
 
 #include "config_common.h"
 
+/* Bluetooth connection setting*/
+#define BLE_HID_MIN_INTERVAL 7.5    /**UNIT_1_25_MS< Minimum connection interval (7.5 ms) */
+#define BLE_HID_MAX_INTERVAL 30   /**UNIT_1_25_MS< Maximum connection interval (30 ms). */
+#define BLE_HID_SLAVE_LATENCY 6  /**< Slave latency. */
+#define BLE_HID_TIMEOUT 800       /**UNIT_10_MS< Connection supervisory timeout (430 ms). */
+
 /* USB Device descriptor parameter */
-#define VENDOR_ID       0xFEED
-#define PRODUCT_ID      0xC475
+#define VENDOR_ID       0x1915
+#define PRODUCT_ID      0xEEEE
 #define DEVICE_VER      0x0001
 #define MANUFACTURER    "Tsiank"
 #define PRODUCT         "Tsiank67_ble"
