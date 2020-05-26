@@ -15,13 +15,13 @@
  */
 
 #include QMK_KEYBOARD_H
-#include "muse.h"
 #include "ble_service.h"
 //#include "rgb_matrix.h"
 //#include "i2c_master.h"
 
+
 // extern keymap_config_t keymap_config;
-//extern rgb_config_t rgb_matrix_config;
+extern rgblight_config_t rgblight_config;
 
 enum ciank67_layers {
     _DEFAULT,
@@ -33,7 +33,7 @@ enum ciank67_layers {
     _BLUE
 };
 
-enum planck_keycodes { DISC = SAFE_RANGE, ADVW, ADVS, SEL0, SEL1, SEL2, DELB, SLEEP, REBOOT };
+enum planck_keycodes { DISC = SAFE_RANGE, ADVW, ADVS, SEL0, SEL1, SEL2, DELB, SLEEP, REBOOT, RGBRST };
 
 #define LCTLESC MT(MOD_LCTL, KC_ESC)
 #define LTPSC LT(_SPACE, KC_SPC)
@@ -62,9 +62,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_SLASH]   = LAYOUT(
         _______,   _______, _______,  _______,    _______,    _______,  OUT_USB, OUT_BT, KC_PSCREEN, KC_SCROLLLOCK, KC_PAUSE, _______,_______, RESET,
         _______,    _______,    _______,    _______,    _______   , _______,   _______, _______, KC_INSERT, KC_HOME, KC_PGUP, _______,_______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_DELETE, KC_END,KC_PGDOWN,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, ADVS, ADVW,DELB, SLEEP,
-        _______, _______, _______, KC_TRNS,              KC_SPC, KC_TRNS,RGB_TOG, RGB_MOD, _______, SEL0, SEL1, SEL2
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_DELETE, KC_END,KC_PGDOWN, 
+        RGB_M_P, RGB_M_B, RGB_M_R, RGB_M_SW, RGB_M_SN, RGB_M_K, RGB_M_X, RGB_M_G, RGB_M_T, _______,ADVS, ADVW,DELB, SLEEP,
+        RGBRST, _______, _______, KC_TRNS,              KC_SPC, KC_TRNS,RGB_TOG, RGB_MOD, _______,SEL0, SEL1, SEL2
                       ),
     [_OTHER] = LAYOUT(
         KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,
@@ -114,6 +114,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
     #endif
     switch (keycode) {
+    case RGBRST:
+      #ifdef RGBLIGHT_ENABLE
+        if (record->event.pressed) {
+          // nrfmicro_power_enable(true);
+          eeconfig_update_rgblight_default();
+          rgblight_enable();
+          // RGB_current_mode = rgblight_config.mode;
+          // NRF_LOG_INFO("RGBRST, RGB_current_mode: %d\n", RGB_current_mode);
+        }
+      #endif
+      break;
         case DISC:
             if (record->event.pressed) {
                 ble_disconnect();

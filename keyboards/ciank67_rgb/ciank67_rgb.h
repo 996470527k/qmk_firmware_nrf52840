@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ciank67_wb.h"
+#include "ciank67_rgb.h"
 #include "quantum.h"
 
 #define LAYOUT( \

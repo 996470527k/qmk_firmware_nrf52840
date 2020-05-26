@@ -21,8 +21,8 @@
 #define MATRIX_COL_PINS \
 { 41, 28, 12, 42, 7, 3, 38, 36, 34, 32, 24, 22, 13, 20 }
 
-#define RGB_DI_PIN 31
-#define RGBLED_NUM 16
+#define RGB_DI_PIN 6
+#define RGBLED_NUM 7
 #define RGBLIGHT_ANIMATIONS
 
 #define DEBOUNCE 20

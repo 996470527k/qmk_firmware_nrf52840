@@ -254,16 +254,16 @@ void rgb_matrix_indicators_user(void) {
           rgb_matrix_set_color(82, 0xFF, 0x00, 0x00);
           break;
 	      case _SIGN:
-	        rgb_matrix_set_color(76,0xFF, 0x56, 0x20);
+	        rgb_matrix_set_color_all(0x7A, 0x00, 0xFF);
           break;
 	      case _FN:
 	        rgb_matrix_set_color(77,0xFF, 0x80, 0x00);
           break;
 	      case _RGBST:
-	        rgb_matrix_set_color(78,0xFF, 0x77, 0xBF);
+	        rgb_matrix_set_color(78,0xFF, 0x80, 0xBF);
           break;
 	      case _MOUSE:
-	        rgb_matrix_set_color(79,0xFF, 0x60, 0x40);
+	        rgb_matrix_set_color_all(0x99, 0xf5, 0xFF);
           break;
       }
     }

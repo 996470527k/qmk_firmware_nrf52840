@@ -1,4 +1,4 @@
-#include "ciank67_bl.h"
+#include "ciank67_rgb.h"
 const is31_led g_is31_leds[DRIVER_LED_TOTAL] = {
  /* Refer to IS31 manual for these locations
  *   driver
@@ -79,22 +79,26 @@ const is31_led g_is31_leds[DRIVER_LED_TOTAL] = {
     {1, A_10,  B_10,  C_10},
     {1, D_10,  E_10,  F_10},
 
-    {0, A_11,   B_11,   C_11},
+/* underglow
    {0, D_11,   E_11,   F_11},
    {0, G_11,   H_11,   I_11},
     {0, J_11,   K_11,   L_11},
-    {0, A_12,   B_12,   C_12},
-   {0, D_12,   E_12,   F_12},
-   {0, G_12,   H_12,   I_12},
-    {0, J_12,   K_12,   L_12},
     {1, A_11,   B_11,   C_11},
    {1, D_11,   E_11,   F_11},
    {1, G_11,   H_11,   I_11},
     {1, J_11,   K_11,   L_11},
+
+    {0, A_11,   B_11,   C_11},
+    {1, J_12,   K_12,   L_12},
+
+    {0, A_12,   B_12,   C_12},
+   {0, D_12,   E_12,   F_12},
+   {0, G_12,   H_12,   I_12},
+    {0, J_12,   K_12,   L_12},
     {1, A_12,   B_12,   C_12},
    {1, D_12,   E_12,   F_12},
-   {1, G_12,   H_12,   I_12},
-    {1, J_12,   K_12,   L_12}
+   {1, G_12,   H_12,   I_12}
+ */
 };
 
 led_config_t g_led_config = {{
