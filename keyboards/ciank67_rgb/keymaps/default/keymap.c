@@ -17,12 +17,20 @@
 #include QMK_KEYBOARD_H
 //#include "muse.h"
 #include "ble_service.h"
+
+#ifdef RGB_MATRIX_ENABLE
 #include "rgb_matrix.h"
 #include "i2c_master.h"
 
-// extern keymap_config_t keymap_config;
 extern rgb_config_t rgb_matrix_config;
+#endif
+
+// extern keymap_config_t keymap_config;
+
+#ifdef RGBLIGHT_ENABLE
 extern rgblight_config_t rgblight_config;
+#endif
+
 
 enum ciank67_layers {
     _DVORAKR,
@@ -54,10 +62,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                       ),
     [_FN]   = LAYOUT(
        _______,  SLEEP,  MAGIC_TOGGLE_NKRO, _______,    _______, _______,  _______, _______, KC_PSCREEN, KC_SCROLLLOCK, KC_PAUSE, _______,_______, RESET,
-        _______,  OUT_USB, OUT_BT,  _______,   _______, _______,   _______, _______, KC_INSERT, KC_HOME, KC_PGUP, _______,_______, REBOOT,
-        _______,  DELB,   DISC,  _______,  _______, _______, _______, _______, _______, _______, KC_DELETE, KC_END,KC_PGDOWN,
+        _______,  OUT_USB, OUT_BT,  DELB,   DISC,_______,   _______, _______, KC_INSERT, KC_HOME, KC_PGUP, _______,_______, REBOOT,
+        RGBM_TOG,  RGBM_MOD,RGBM_RMOD,  _______,  _______, _______, _______, _______, _______, _______, KC_DELETE, KC_END,KC_PGDOWN,
         RGB_M_P, RGB_M_B, RGB_M_R, RGB_M_SW, RGB_M_SN, RGB_M_K, RGB_M_X, RGB_M_G, RGB_M_T, _______,ADVS, ADVW,DELB, SLEEP,
-        RGB_TOG, RGBRST, RGB_MOD,  _______, KC_SPC, KC_TRNS,_______, _______, _______, _______, TO(_RGBST), TO(_MOUSE)
+        RGB_TOG, RGBRST, RGB_MOD,  RGB_RMOD, KC_SPC, KC_TRNS,_______, _______, _______, _______, TO(_RGBST), TO(_MOUSE)
                       ),
     [_QWERTY] = LAYOUT(
         KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,
@@ -67,9 +75,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL,    KC_LALT, KC_LWIN,  MO(_SIGN),              RSFT_T(KC_SPC), MO(_FN),  KC_MENU, KC_RALT,                   KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT
                        ),
     [_RGBST] = LAYOUT(
-        _______, RGB_HUI, RGB_HUD, RGB_SAI, _______, KC_WH_D, KC_MS_U, KC_WH_U, _______, _______,_______, _______,_______, _______,
-        _______, RGB_VAI, RGB_VAD, RGB_SPI, RGB_SPD, _______, KC_BTN2, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN1, _______,_______, _______,
-        _______, _______,_______,_______, _______, _______, _______, KC_ACL0, KC_ACL1, KC_ACL2, _______, _______,_______,
+        _______, RGBM_HUI, RGBM_HUD, RGBM_SAI, RGBM_SAD, RGBM_VAI, RGBM_VAD, RGBM_SPI, RGBM_SPD, _______, _______,_______, _______,_______, 
+        _______, _______,_______,_______, _______,_______,  _______, _______,_______,_______, _______,_______,_______, _______,
+        _______, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, RGB_SPI, RGB_SPD, _______, _______,_______, _______,
         _______,  RGB_M_P, RGB_M_B, RGB_M_R, RGB_M_SW, RGB_M_SN, RGB_M_K, RGB_M_X, RGB_M_G, RGB_M_T, _______,_______,_______,_______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,TO(_DVORAKR),  _______
                      ),
@@ -98,17 +106,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
     #endif
     switch (keycode) {
-    case RGBRST:
-      #ifdef RGBLIGHT_ENABLE
-        if (record->event.pressed) {
-          // nrfmicro_power_enable(true);
-          eeconfig_update_rgblight_default();
-          rgblight_enable();
-          // RGB_current_mode = rgblight_config.mode;
-          // NRF_LOG_INFO("RGBRST, RGB_current_mode: %d\n", RGB_current_mode);
-        }
-      #endif
-      break;
         case DISC:
             if (record->event.pressed) {
                 ble_disconnect();
@@ -155,8 +152,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 NVIC_SystemReset();
             }
-
-        case RGB_TOG:
+            
+    case RGBRST:
+      #ifdef RGBLIGHT_ENABLE
+        if (record->event.pressed) {
+          eeconfig_update_rgblight_default();
+          rgblight_enable();
+        }
+      #endif
+      break;
+      
+        case RGBM_TOG:
             if (record->event.pressed) {
                 if (rgb_matrix_config.enable) {
                     i2c_stop();
