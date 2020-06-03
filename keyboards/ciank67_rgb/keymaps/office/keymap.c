@@ -15,26 +15,34 @@
  */
 
 #include QMK_KEYBOARD_H
-#include "muse.h"
+//#include "muse.h"
 #include "ble_service.h"
+
+#ifdef RGB_MATRIX_ENABLE
 #include "rgb_matrix.h"
 #include "i2c_master.h"
 
-// extern keymap_config_t keymap_config;
 extern rgb_config_t rgb_matrix_config;
+#endif
+
+// extern keymap_config_t keymap_config;
+
+#ifdef RGBLIGHT_ENABLE
+extern rgblight_config_t rgblight_config;
+#endif
+
 
 enum ciank67_layers {
     _DVORAKR,
     _SIGN,
     _FN,
     _QWERTY,
-    _SPACE,
     _RGBST,
     _MOUSE
 };
 
 
-enum planck_keycodes { DISC = SAFE_RANGE, ADVW, ADVS, SEL0, SEL1, SEL2, DELB, SLEEP, REBOOT };
+enum planck_keycodes { DISC = SAFE_RANGE, ADVW, ADVS, SEL0, SEL1, SEL2, DELB, SLEEP, REBOOT, RGBRST};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -54,10 +62,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                       ),
     [_FN]   = LAYOUT(
        _______,  SLEEP,  MAGIC_TOGGLE_NKRO, _______,    _______, _______,  _______, _______, KC_PSCREEN, KC_SCROLLLOCK, KC_PAUSE, _______,_______, RESET,
-        _______,  OUT_USB, OUT_BT,  _______,   _______, _______,   _______, _______, KC_INSERT, KC_HOME, KC_PGUP, _______,_______, REBOOT,
-        _______,  DELB,   DISC,  _______,  _______, _______, _______, _______, _______, _______, KC_DELETE, KC_END,KC_PGDOWN,
-         _______,   ADVW, SEL0, SEL1, SEL2, _______, _______, _______,  _______,_______, _______, _______,ADVS, _______,
-        RGB_TOG, _______, RGB_MOD,  _______, KC_SPC, KC_TRNS,_______, _______, _______, _______, TO(_RGBST), TO(_MOUSE)
+        _______,  OUT_USB, OUT_BT,  DELB,   DISC,_______,   _______, _______, KC_INSERT, KC_HOME, KC_PGUP, _______,_______, REBOOT,
+        RGBM_TOG,  RGBM_MOD,RGBM_RMOD,  _______,  _______, _______, _______, _______, _______, _______, KC_DELETE, KC_END,KC_PGDOWN,
+        RGB_M_P, RGB_M_B, RGB_M_R, RGB_M_SW, RGB_M_SN, RGB_M_K, RGB_M_X, RGB_M_G, RGB_M_T, _______,ADVS, ADVW,DELB, SLEEP,
+        RGB_TOG, RGBRST, RGB_MOD,  RGB_RMOD, KC_SPC, KC_TRNS,_______, _______, _______, _______, TO(_RGBST), TO(_MOUSE)
                       ),
     [_QWERTY] = LAYOUT(
         KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,
@@ -67,10 +75,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL,    KC_LALT, KC_LWIN,  MO(_SIGN),              RSFT_T(KC_SPC), MO(_FN),  KC_MENU, KC_RALT,                   KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT
                        ),
     [_RGBST] = LAYOUT(
-        _______, RGB_HUI, RGB_HUD, RGB_SAI, _______, KC_WH_D, KC_MS_U, KC_WH_U, _______, _______,_______, _______,_______, _______,
-        _______, RGB_VAI, RGB_VAD, RGB_SPI, RGB_SPD, _______, KC_BTN2, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN1, _______,_______, _______,
-        _______, RGB_MODE_PLAIN, RGB_MODE_BREATHE, RGB_MODE_RAINBOW, _______, _______, _______, KC_ACL0, KC_ACL1, KC_ACL2, _______, _______,_______,
-        _______, RGB_MODE_SWIRL, RGB_MODE_SNAKE, RGB_MODE_KNIGHT, RGB_MODE_XMAS, RGB_MODE_GRADIENT, RGB_MODE_RGBTEST, _______, _______, _______, _______, _______,_______, _______,
+        _______, RGBM_HUI, RGBM_HUD, RGBM_SAI, RGBM_SAD, RGBM_VAI, RGBM_VAD, RGBM_SPI, RGBM_SPD, _______, _______,_______, _______,_______, 
+        _______, _______,_______,_______, _______,_______,  _______, _______,_______,_______, _______,_______,_______, _______,
+        _______, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, RGB_SPI, RGB_SPD, _______, _______,_______, _______,
+        _______,  RGB_M_P, RGB_M_B, RGB_M_R, RGB_M_SW, RGB_M_SN, RGB_M_K, RGB_M_X, RGB_M_G, RGB_M_T, _______,_______,_______,_______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,TO(_DVORAKR),  _______
                      ),
     [_MOUSE] = LAYOUT(
@@ -144,8 +152,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 NVIC_SystemReset();
             }
-
-        case RGB_TOG:
+            
+    case RGBRST:
+      #ifdef RGBLIGHT_ENABLE
+        if (record->event.pressed) {
+          eeconfig_update_rgblight_default();
+          rgblight_enable();
+        }
+      #endif
+      break;
+      
+        case RGBM_TOG:
             if (record->event.pressed) {
                 if (rgb_matrix_config.enable) {
                     i2c_stop();
@@ -254,16 +271,16 @@ void rgb_matrix_indicators_user(void) {
           rgb_matrix_set_color(82, 0xFF, 0x00, 0x00);
           break;
 	      case _SIGN:
-	        rgb_matrix_set_color_all(0x7A, 0x00, 0xFF);
+	        rgb_matrix_set_color(76,0xFF, 0x56, 0x20);
           break;
 	      case _FN:
 	        rgb_matrix_set_color(77,0xFF, 0x80, 0x00);
           break;
 	      case _RGBST:
-	        rgb_matrix_set_color(78,0xFF, 0x80, 0xBF);
+	        rgb_matrix_set_color(78,0xFF, 0x77, 0xBF);
           break;
 	      case _MOUSE:
-	        rgb_matrix_set_color_all(0x99, 0xf5, 0xFF);
+	        rgb_matrix_set_color(79,0xFF, 0x60, 0x40);
           break;
       }
     }
