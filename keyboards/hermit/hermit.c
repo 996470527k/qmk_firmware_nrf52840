@@ -145,3 +145,121 @@ led_config_t g_led_config = {{
      //1 , 1 , 1 , 1 , 1 , 1 , 1
 }};
 #endif
+
+void matrix_scan_kb(void) {
+    // put your looping keyboard code here
+    // runs every cycle (a lot)
+    matrix_scan_user();
+    uint8_t layer = biton32(layer_state);
+
+          switch (layer) {
+        case 0:
+            led[2].r = 255;
+            led[2].g = 255;
+            led[2].b = 255;
+            led[3].r = 0;
+            led[3].g = 0;
+            led[3].b = 0;
+            led[4].r = 0;
+            led[4].g = 0;
+            led[4].b = 0;
+            led[5].r = 0;
+            led[5].g = 0;
+            led[5].b = 0;
+            led[6].r = 0;
+            led[6].g = 0;
+            led[6].b = 0;
+            ws2812_setleds(led, 7);
+            break;
+        case 1:
+            led[2].r = 0;
+            led[2].g = 0;
+            led[2].b = 0;
+            led[3].r = 255;
+            led[3].g = 255;
+            led[3].b = 255;
+            led[4].r = 0;
+            led[4].g = 0;
+            led[4].b = 0;
+            led[5].r = 0;
+            led[5].g = 0;
+            led[5].b = 0;
+            led[6].r = 0;
+            led[6].g = 0;
+            led[6].b = 0;
+            ws2812_setleds(led, 7);
+            break;
+        case 2:
+            led[2].r = 0;
+            led[2].g = 0;
+            led[2].b = 0;
+            led[3].r = 0;
+            led[3].g = 0;
+            led[3].b = 0;
+            led[4].r = 255;
+            led[4].g = 255;
+            led[4].b = 255;
+            led[5].r = 0;
+            led[5].g = 0;
+            led[5].b = 0;
+            led[6].r = 0;
+            led[6].g = 0;
+            led[6].b = 0;
+            ws2812_setleds(led, 7);
+            break;
+        case 3:
+            led[2].r = 0;
+            led[2].g = 0;
+            led[2].b = 0;
+            led[3].r = 0;
+            led[3].g = 0;
+            led[3].b = 0;
+            led[4].r = 0;
+            led[4].g = 0;
+            led[4].b = 0;
+            led[5].r = 255;
+            led[5].g = 255;
+            led[5].b = 255;
+            led[6].r = 0;
+            led[6].g = 0;
+            led[6].b = 0;
+            ws2812_setleds(led, 7);
+            break;
+        default:
+            led[6].r = 0;
+            led[6].g = 0;
+            led[6].b = 0;
+            ws2812_setleds(led, 7);
+            break;
+    }
+
+};
+
+
+void led_set_kb(uint8_t usb_led) {
+
+    if (usb_led & (1<<USB_LED_CAPS_LOCK)) {
+        led[0].r = 255;
+        ws2812_setleds(led, 7);
+    } else {
+        led[0].r = 0;
+        ws2812_setleds(led, 7);
+    }
+
+    if (usb_led & (1<<USB_LED_SCROLL_LOCK)) {
+        led[0].g = 255;
+        ws2812_setleds(led, 7);
+    } else {
+        led[0].g = 0;
+        ws2812_setleds(led, 7);
+    }
+
+    if (usb_led & (1<<USB_LED_NUM_LOCK)) {
+        led[1].b = 255;
+        ws2812_setleds(led, 7);
+    } else {
+        led[1].b = 0;
+        ws2812_setleds(led, 7);
+    }
+
+}
